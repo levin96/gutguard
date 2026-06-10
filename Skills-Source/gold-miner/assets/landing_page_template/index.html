@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{PRODUCT_NAME}} - {{ONE_SENTENCE_PITCH}}</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        header { text-align: center; margin-bottom: 60px; }
+        h1 { font-size: 2.5em; margin-bottom: 10px; color: #1a1a1a; }
+        .hero { background: #f9f9f9; padding: 40px; border-radius: 8px; margin-bottom: 40px; }
+        .cta-container { text-align: center; margin-top: 40px; }
+        .cta-button { background: #0070f3; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 1.2em; display: inline-block; }
+        .problem-section { margin-bottom: 40px; }
+        .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .feature { padding: 20px; border: 1px solid #eee; border-radius: 8px; }
+        footer { margin-top: 80px; text-align: center; font-size: 0.9em; color: #666; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>{{PRODUCT_NAME}}</h1>
+        <p style="font-size: 1.2em; color: #666;">{{ONE_SENTENCE_PITCH}}</p>
+    </header>
+
+    <div class="hero">
+        <h2>Stop {{PRIMARY_PAIN_POINT}}</h2>
+        <p>{{DETAILED_DESCRIPTION}}</p>
+        <div class="cta-container">
+            <a href="#waitlist" class="cta-button">Get Early Access</a>
+        </div>
+    </div>
+
+    <div class="problem-section">
+        <h3>The Problem</h3>
+        <p>{{PROBLEM_CONTEXT}}</p>
+    </div>
+
+    <div class="feature-grid">
+        <div class="feature">
+            <h4>Fast & Simple</h4>
+            <p>Designed specifically for {{TARGET_AUDIENCE}}.</p>
+        </div>
+        <div class="feature">
+            <h4>Solve {{SPECIFIC_PAIN_1}}</h4>
+            <p>Never worry about {{SPECIFIC_PAIN_1}} again.</p>
+        </div>
+    </div>
+
+    <footer id="waitlist">
+        <p>&copy; 2026 {{PRODUCT_NAME}}. All rights reserved.</p>
+        <p>Join the waitlist to be the first to know when we launch.</p>
+        <form>
+            <input type="email" placeholder="Enter your email" required style="padding: 10px; width: 250px; border-radius: 5px; border: 1px solid #ccc;">
+            <button type="submit" style="padding: 10px 20px; background: #333; color: white; border: none; border-radius: 5px; cursor: pointer;">Notify Me</button>
+        </form>
+    </footer>
+</body>
+</html>
