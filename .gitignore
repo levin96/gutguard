@@ -1,0 +1,10 @@
+# Ignore everything
+*
+
+# Allow the web files and config
+!public/
+!public/**
+!netlify.toml
+!GUTGUARD_STRATEGY.md
+!DEPLOY.md
+!.gitignore
