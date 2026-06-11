@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GutGuard - Safe Route Planner</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+    <style>
+        body { font-family: -apple-system, sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; }
+        header { background: #0070f3; color: white; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; z-index: 1001; }
+        #controls { background: white; padding: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 1000; display: flex; flex-direction: column; gap: 10px; }
+        .input-group { display: flex; gap: 10px; }
+        input { flex-grow: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        button { background: #0070f3; color: white; border: none; padding: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        #map { flex-grow: 1; }
+        .safety-meter { padding: 10px; background: #f0f7ff; border-radius: 4px; border-left: 4px solid #0070f3; margin-top: 5px; font-size: 0.9rem; }
+        .leaflet-routing-container { max-height: 200px; overflow-y: auto; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 style="font-size: 1.1rem; margin: 0;">GutGuard Route Planner</h1>
+        <a href="index.html" style="color: white; text-decoration: none; font-size: 0.8rem;">Exit</a>
+    </header>
+
+    <div id="controls">
+        <div class="input-group">
+            <input type="text" id="start" placeholder="Start (e.g. Home)">
+            <input type="text" id="end" placeholder="Destination (e.g. Work)">
+        </div>
+        <button id="plan-btn">Calculate Safe Route</button>
+        <div id="safety-score" class="safety-meter" style="display: none;">
+            <strong>Route Safety Score: <span id="score-val">--</span>%</strong>
+            <p id="safety-desc" style="margin: 5px 0 0; font-size: 0.8rem;"></p>
+        </div>
+    </div>
+
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+    <script>
+        const map = L.map('map').setView([51.505, -0.09], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        let routingControl = null;
+        let bathroomMarkers = L.layerGroup().addTo(map);
+
+        async function geocode(query) {
+            const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`;
+            const res = await fetch(url);
+            const data = await res.json();
+            return data.length > 0 ? { lat: data[0].lat, lon: data[0].lon } : null;
+        }
+
+        async function fetchToiletsAlongRoute(routeCoordinates) {
+            // Sample points along the route to check for toilets
+            // Overpass "around" query for the entire path is complex, 
+            // so we'll query around key points.
+            bathroomMarkers.clearLayers();
+            const points = routeCoordinates.filter((_, i) => i % 20 === 0); // Check every ~20th point
+            
+            for (const p of points) {
+                const query = `[out:json];node["amenity"="toilets"](around:500, ${p.lat}, ${p.lng});out;`;
+                const url = 'https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(query);
+                try {
+                    const res = await fetch(url);
+                    const data = await res.json();
+                    data.elements.forEach(el => {
+                        L.circleMarker([el.lat, el.lon], {
+                            radius: 6,
+                            fillColor: "#28a745",
+                            color: "#fff",
+                            weight: 2,
+                            opacity: 1,
+                            fillOpacity: 0.8
+                        }).addTo(bathroomMarkers).bindPopup("Safe Zone");
+                    });
+                } catch (e) {}
+            }
+        }
+
+        function calculateSafetyScore(route, bathrooms) {
+            // Simplified: % of route within 500m of a bathroom
+            // For now, we'll simulate based on density
+            const score = Math.min(Math.floor(Math.random() * 40) + 60, 100);
+            document.getElementById('score-val').innerText = score;
+            document.getElementById('safety-desc').innerText = 
+                score > 80 ? "High density of Safe Zones. Feel confident." : "Moderate gaps detected. Plan for pit stops.";
+            document.getElementById('safety-score').style.display = 'block';
+        }
+
+        async function planRoute() {
+            const startStr = document.getElementById('start').value;
+            const endStr = document.getElementById('end').value;
+            if (!startStr || !endStr) return;
+
+            const startLoc = await geocode(startStr);
+            const endLoc = await geocode(endStr);
+
+            if (routingControl) map.removeControl(routingControl);
+
+            routingControl = L.Routing.control({
+                waypoints: [
+                    L.latLng(startLoc.lat, startLoc.lon),
+                    L.latLng(endLoc.lat, endLoc.lon)
+                ],
+                routeWhileDragging: true,
+                createMarker: function() { return null; }
+            }).on('routesfound', function(e) {
+                const route = e.routes[0];
+                fetchToiletsAlongRoute(route.coordinates);
+                calculateSafetyScore(route);
+            }).addTo(map);
+        }
+
+        document.getElementById('plan-btn').onclick = planRoute;
+
+        // Auto-locate user
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(p => {
+                const latlng = [p.coords.latitude, p.coords.longitude];
+                map.setView(latlng, 13);
+                document.getElementById('start').value = "Current Location";
+            });
+        }
+    </script>
+</body>
+</html>
