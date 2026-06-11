@@ -2,25 +2,32 @@
 
 To start earning with GutGuard, we need to move from "Landing Page" to "First 100 Leads".
 
-## 1. Outreach Strategy: The "Empathy First" Approach
-Don't post ads. Post as a fellow sufferer looking for feedback.
+## 1. Outreach Strategy: The "Value First" Approach
+Don't post ads. Post a helpful tool and ask for feedback. This bypasses "no promotion" rules in most communities because you are providing a free resource.
 
-### Reddit Target Subreddits
-- `r/ibs` (Main target)
-- `r/ibd`
-- `r/crohnsdisease`
-- `r/anxiety` (Secondary)
+### Target Platforms
+- **IBSpatient.org / IBS.net**: Dedicated forums. Post in "General" or "Life with IBS" sections.
+- **Discord (Chronic Illness Community)**: Engage in #health-talk or #support channels.
+- **Quora**: Search for "how to handle bathroom anxiety" and provide a helpful answer, linking to the map as a resource.
+- **Facebook Groups (GI Society)**: Share as a "resource I built for myself" in private support groups.
 
-### Post Draft: "The 60-Minute Ritual"
-**Title**: Does anyone else have a "60-minute toilet ritual" before they can leave the house?
+### Post Template: "Mapping the Safe Zones"
+**Title**: I built a free map to help with my "bathroom anxiety"—would love your feedback.
 **Body**: 
-> I’ve been struggling with the anticipatory anxiety of leaving the house lately. Even if I feel fine, I find myself sitting on the toilet for an hour "just in case" before I dare walk out the door. It’s exhausting and makes me feel like I’m living in a 10-minute radius of my home.
+> Hey everyone, I’ve been struggling with the "10-minute radius" problem for years—never wanting to leave the house because I'm not sure where the safe zones are.
 >
-> I'm working on a small tool (GutGuard) to help differentiate between "real" urgency and that "brain-gut anxiety" loop, and to map out routes with guaranteed bathrooms.
+> I decided to build a simple tool (GutGuard) that maps out public toilets and "Safe Zones" in real-time. It’s free and doesn't require an account. 
 >
-> Would anyone be interested in testing this or giving feedback? I just want to know if I'm the only one feeling this way.
+> I'm just looking for feedback from fellow sufferers: Does this help you feel safer leaving the house? What's missing?
 >
-> [Link to Landing Page]
+> [Link to Safe-Zone Map: your-site.netlify.app/map.html]
+
+## 2. Advanced Lead Gen: Quora & Authority Building
+Find questions on Quora like:
+- "How do people with IBS travel?"
+- "What are some tips for social anxiety related to stomach issues?"
+
+**Response Strategy**: Give 3-4 genuine tips (e.g., deep breathing, "emergency kit", planning), then mention: "I actually built a free mapping tool to help me plan my routes with guaranteed 'safe zones' if you want to try it out."
 
 ## 2. Monetization Plan
 Based on the high value of "Peace of Mind", GutGuard can support a premium subscription.
